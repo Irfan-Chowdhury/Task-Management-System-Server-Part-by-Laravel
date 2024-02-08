@@ -10,4 +10,5 @@
 ### Packages
 - [Laravel Pint](https://laravel.com/docs/10.x/pint)
 - Default Auth
+- [Artisan View](https://github.com/svenluijten/artisan-view)
 
