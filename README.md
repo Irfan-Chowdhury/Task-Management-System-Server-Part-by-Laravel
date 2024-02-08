@@ -5,4 +5,9 @@
 </div>
 
 ### Database Schema
-#### https://drawsql.app/teams/irfan-chy/diagrams/task-management-system
+#### [Click Here](https://drawsql.app/teams/irfan-chy/diagrams/task-management-system)
+
+### Packages
+- [Laravel Pint](https://laravel.com/docs/10.x/pint)
+- Default Auth
+
