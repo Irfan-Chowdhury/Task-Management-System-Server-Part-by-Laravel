@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\TaskStatusEnum;
 use App\Facades\Alert;
-use App\Models\Project;
+use App\Models\Task;
 use Exception;
 
-class ProjectService
+class TaskService
 {
     public function getAllData(): ?object
     {
-        return Project::select('id', 'name', 'code')
+        return Task::with('project:id,name,code')
+            ->select('id','project_id', 'name', 'description', 'status')
             ->orderBy('id','DESC')
             ->get();
     }
@@ -20,17 +22,29 @@ class ProjectService
     public function yajraDataTable()
     {
         if (request()->ajax()) {
-            $projects = self::getAllData();
+            $tasks = self::getAllData();
 
-            return datatables()->of($projects)
+            return datatables()->of($tasks)
                 ->setRowId(function ($row) {
                     return $row->id;
+                })
+                ->addColumn('project_code', function ($row) {
+                    return $row->project->code;
                 })
                 ->addColumn('name', function ($row) {
                     return $row->name;
                 })
-                ->addColumn('code', function ($row) {
-                    return $row->code;
+                ->addColumn('status', function ($row) {
+
+                    $badgeColor = '';
+                    if($row->status === "Pending"){
+                        $badgeColor = 'primary';
+                    }else if($row->status === "Working"){
+                        $badgeColor = 'warning';
+                    }else if($row->status === "Done"){
+                        $badgeColor = 'success';
+                    }
+                    return "<span class='p-2 badge badge-". $badgeColor . "'>" . $row->status . "</span>";
                 })
                 ->addColumn('action', function ($row) {
                     $button = '<button type="button" data-id="'.$row->id.'" class="edit btn btn-primary btn-sm"><i class="dripicons-pencil"></i>Edit</button>';
@@ -39,17 +53,19 @@ class ProjectService
 
                     return $button;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['status','action'])
                 ->make(true);
         }
     }
 
-    public function createProject(object $request): array
+    public function createTask(object $request): array
     {
         try {
-            Project::create([
+            Task::create([
+                'project_id' => $request->project_id,
                 'name' => $request->name,
-                'code' => $request->code,
+                'description' => $request->description,
+                'status' => $request->status,
             ]);
 
             return Alert::successMessage('Data Saved Successfully');
@@ -60,32 +76,17 @@ class ProjectService
         }
     }
 
-    public function getProjectById(int $projectId): object
+    public function getTaskById(int $taskId): object
     {
-        return Project::select('id', 'name', 'code')->find($projectId);
+        return Task::with('project:id,name,code')
+                ->select('id', 'project_id', 'name', 'description','status')
+                ->find($taskId);
     }
 
-    public function updateProject(object $request, int $projectId): array
+    public function removeTask(int $taskId): array
     {
         try {
-            Project::where('id', $projectId)
-                ->update([
-                    'name' => $request->name,
-                    'code' => $request->code,
-                ]);
-
-            return Alert::successMessage('Data Updated Successfully');
-
-        } catch (Exception $exception) {
-
-            return Alert::errorMessage($exception->getMessage());
-        }
-    }
-
-    public function removeProject(int $projectId): array
-    {
-        try {
-            $this->getProjectById($projectId)->delete();
+            $this->getTaskById($taskId)->delete();
 
             return Alert::successMessage('Data Deleted Successfully');
 

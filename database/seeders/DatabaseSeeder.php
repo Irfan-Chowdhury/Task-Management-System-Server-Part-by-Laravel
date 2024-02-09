@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             ManagerSeeder::class,
             ProjectSeeder::class,
+            TaskSeeder::class,
         ]);
     }
 }

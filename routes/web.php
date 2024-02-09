@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeamMemberController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +50,17 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/edit/{projectId}', 'edit')->name('projects.edit');
             Route::post('/update/{projectId}', 'update')->name('projects.update');
             Route::get('/destroy/{projectId}', 'destroy')->name('projects.destroy');
+        });
+    });
+
+    Route::prefix('tasks')->group(function () {
+        Route::controller(TaskController::class)->group(function () {
+            Route::get('/', 'index')->name('tasks.index');
+            Route::get('/datatable', 'datatable')->name('tasks.datatable');
+            Route::post('/store', 'store')->name('tasks.store');
+            Route::get('/edit/{taskId}', 'edit')->name('tasks.edit');
+            Route::post('/update/{taskId}', 'update')->name('tasks.update');
+            Route::get('/destroy/{taskId}', 'destroy')->name('tasks.destroy');
         });
     });
 

@@ -15,9 +15,7 @@ class ProjectController extends Controller
 
     public function index()
     {
-        $projects = $this->projectService->getAllData();
-
-        return view('pages.projects.index', compact('projects'));
+        return view('pages.projects.index');
     }
 
     public function datatable()

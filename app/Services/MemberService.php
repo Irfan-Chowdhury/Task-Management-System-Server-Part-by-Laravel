@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Enums\UserRoleEnum;
@@ -12,6 +14,7 @@ class MemberService
     {
         return User::select('id', 'name', 'email', 'employee_id', 'position')
             ->where('role_id', UserRoleEnum::TEAMMATE)
+            ->orderBy('id','DESC')
             ->get();
 
     }

@@ -12,7 +12,7 @@
             <div class="modal-body">
 
                 <form method="POST" id="submitForm">
-                    
+
                     @csrf
                     <div class="row">
                         @include('common-files.input-field', [
@@ -31,11 +31,9 @@
                             'placeholderData' => 'Ex: P-123',
                             'isRequired' => true,
                         ])
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" id="submitButton">Save</button>
-                        </div>
-
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary" id="submitButton">Save</button>
                     </div>
                 </form>
             </div>

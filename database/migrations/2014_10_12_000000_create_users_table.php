@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('role_id', 'users_role_id_foreign')->references('id')->on('users');
+            $table->foreign('role_id', 'users_role_id_foreign')->references('id')->on('roles');
         });
     }
 
