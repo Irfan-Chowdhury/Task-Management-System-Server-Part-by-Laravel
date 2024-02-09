@@ -15,10 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('employee_id')->unique();
+            $table->string('position',191)->nullable();
+            $table->foreignId('role_id');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('role_id', 'users_role_id_foreign')->references('id')->on('users');
         });
     }
 
@@ -27,6 +32,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('users_role_id_foreign');
+            $table->dropIfExists('users');
+        });
     }
 };

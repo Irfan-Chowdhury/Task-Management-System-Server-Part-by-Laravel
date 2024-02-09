@@ -12,3 +12,16 @@
 - Default Auth
 - [Artisan View](https://github.com/svenluijten/artisan-view)
 
+
+### Seeder
+You can run by one by one
+
+```bash
+php artisan db:seed --class=RoleSeeder
+php artisan db:seed --class=ManagerSeeder
+```
+or,
+
+```bash
+php artisan db:seed
+```
