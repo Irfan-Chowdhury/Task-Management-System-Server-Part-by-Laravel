@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TeamMemberController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,17 @@ Route::middleware(['auth'])->group(function () {
             // Route::get('/edit/{team-member}', 'edit')->name('team-members.edit');
             Route::post('/update/{memberId}', 'update')->name('team-members.update');
             Route::get('/destroy/{memberId}', 'destroy')->name('team-members.destroy');
+        });
+    });
+
+    Route::prefix('projects')->group(function () {
+        Route::controller(ProjectController::class)->group(function () {
+            Route::get('/', 'index')->name('projects.index');
+            Route::get('/datatable', 'datatable')->name('projects.datatable');
+            Route::post('/store', 'store')->name('projects.store');
+            Route::get('/edit/{projectId}', 'edit')->name('projects.edit');
+            Route::post('/update/{projectId}', 'update')->name('projects.update');
+            Route::get('/destroy/{projectId}', 'destroy')->name('projects.destroy');
         });
     });
 

@@ -7,6 +7,11 @@
 ### Database Schema
 #### [Click Here](https://drawsql.app/teams/irfan-chy/diagrams/task-management-system)
 
+### Requirements
+- PHP - 8.1
+- Laravel- 10
+- MySQL - 8
+
 ### Packages
 - [Laravel Pint](https://laravel.com/docs/10.x/pint)
 - Default Auth
@@ -19,6 +24,7 @@ You can run by one by one
 ```bash
 php artisan db:seed --class=RoleSeeder
 php artisan db:seed --class=ManagerSeeder
+php artisan db:seed --class=ProjectSeeder
 ```
 or,
 

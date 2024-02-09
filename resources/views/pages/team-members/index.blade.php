@@ -55,12 +55,6 @@
 @endsection
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        console.log('ok');
-    });
-</script>
-
 
 @if(session()->has('success'))
     <script>

@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             RoleSeeder::class,
-            ManagerSeeder::class
+            ManagerSeeder::class,
+            ProjectSeeder::class,
         ]);
     }
 }
