@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "223c9729802fd1ff9f189baccea0ea29",
+    "content-hash": "4754f6759e459e7e734764dc5f02ca63",
     "packages": [
         {
             "name": "brick/math",
@@ -1044,6 +1044,62 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "irfan-chowdhury/repository-maker",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Irfan-Chowdhury/repository-maker.git",
+                "reference": "f81cf500c44c1567d8206535776e295591b8979c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Irfan-Chowdhury/repository-maker/zipball/f81cf500c44c1567d8206535776e295591b8979c",
+                "reference": "f81cf500c44c1567d8206535776e295591b8979c",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=8.0",
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Irfan\\RepositoryMaker\\RepositoryServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Irfan\\RepositoryMaker\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Irfan Chowdhury",
+                    "email": "irfanchowdhury80@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This package will generate the necessary files for the repository design pattern environment.",
+            "homepage": "https://github.com/Irfan-Chowdhury/repository-maker",
+            "keywords": [
+                "laravel-Repository-design-pattern",
+                "laravel-repository",
+                "repository",
+                "repository-design-pattern"
+            ],
+            "support": {
+                "issues": "https://github.com/Irfan-Chowdhury/repository-maker/issues",
+                "source": "https://github.com/Irfan-Chowdhury/repository-maker/tree/v1.2.0"
+            },
+            "time": "2023-08-27T16:02:34+00:00"
         },
         {
             "name": "laravel/framework",

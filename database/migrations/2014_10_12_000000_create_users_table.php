@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('role_id', 'users_role_id_foreign')->references('id')->on('users');
         });

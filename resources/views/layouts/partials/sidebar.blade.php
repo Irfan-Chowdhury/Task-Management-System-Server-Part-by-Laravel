@@ -21,11 +21,17 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Nav Item - Charts -->
     <li class="nav-item">
         <a class="nav-link" href="charts.html">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Page</span></a>
+            <span>Page</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('team-members.index') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Team Members</span>
+        </a>
     </li>
 
 

@@ -19,7 +19,7 @@ class ManagerSeeder extends Seeder
             'name' => 'Mister Manager',
             'email' => 'manager@gmail.com',
             'employee_id' => 'BAT-12345',
-            'role_id' => UserRoleEnum::Manager,
+            'role_id' => UserRoleEnum::MANAGER,
             'password' => Hash::make('manager123'),
         ]);
     }

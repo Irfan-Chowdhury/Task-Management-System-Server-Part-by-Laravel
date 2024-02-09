@@ -61,7 +61,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'employee_id' => ['required', 'string', 'max:255', 'unique:users'],
             'position' => ['nullable', 'string','max:191'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:5', 'confirmed'],
         ]);
     }
 
@@ -72,7 +72,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'employee_id' => $data['employee_id'],
             // 'role_id' =>1,
-            'role_id' => UserRoleEnum::Manager,
+            'role_id' => UserRoleEnum::MANAGER,
             'password' => Hash::make($data['password']),
         ]);
     }

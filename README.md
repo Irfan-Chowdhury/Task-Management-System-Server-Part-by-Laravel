@@ -25,3 +25,8 @@ or,
 ```bash
 php artisan db:seed
 ```
+
+
+### Manager Credentials 
+Email: manager@gmail.com <br>
+Password: manager123
