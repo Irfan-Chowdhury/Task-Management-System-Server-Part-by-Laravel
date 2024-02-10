@@ -27,9 +27,9 @@ class TaskController extends Controller
         return view('pages.tasks.index', compact('projects','members'));
     }
 
-    public function datatable()
+    public function datatable(Request $request)
     {
-        return $this->taskService->yajraDataTable();
+        return $this->taskService->yajraDataTable($request);
     }
 
     public function store(StoreTaskRequest $request)

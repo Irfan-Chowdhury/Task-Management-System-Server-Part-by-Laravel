@@ -14,47 +14,83 @@ use Illuminate\Support\Facades\DB;
 class TaskService
 {
 
-    public function getAllData(): ?object
+    public function getAllData(object|null $request): ?object
     {
         if(auth()->user()->can('task-view-all'))
-           return self::getDataForManager();
+           return self::getDataForManager($request);
         else
-           return self::getDataForSingleMember();
+           return self::getDataForSingleMember($request);
     }
 
 
-    private function getDataForManager() : ?object
+    private function getDataForManager(object|null $request) : ?object
     {
-        return Task::with('project:id,name,code','users:id,name,email')
-                ->select('id','project_id', 'name', 'description', 'status')
-                ->orderBy('id','DESC')
-                ->get();
+        $baseQuery = Task::with('project:id,name,code','users:id,name,email')
+                    ->select('id','project_id', 'name', 'description', 'status');
+
+        if (isset($request->project_id)) {
+            return  $baseQuery
+                    ->where('project_id', $request->project_id)
+                    ->orderBy('id','DESC')
+                    ->get();
+        }
+        else if (isset($request->status)) {
+            return  $baseQuery
+                    ->where('status', $request->status)
+                    ->orderBy('id','DESC')
+                    ->get();
+        }
+
+        else {
+            return  $baseQuery
+                    ->orderBy('id','DESC')
+                    ->get();
+        }
+
+
     }
 
-    private function getDataForSingleMember() : ?object
+    private function getDataForSingleMember(object|null $request=null) : ?object
     {
-        return DB::table('task_user')
-                ->select(
-                    'projects.code as project_code',
-                    'tasks.id as id',
-                    'tasks.name as name',
-                    'tasks.status as status',
-                    'users.name as user_name'
-                )
-                ->join('tasks', 'tasks.id', 'task_user.task_id')
-                ->join('projects', 'projects.id', 'tasks.project_id')
-                ->join('users', 'users.id', 'task_user.user_id')
-                ->where('task_user.user_id', Auth::user()->id)
-                ->orderBy('id','DESC')
-                ->get();
+        $baseQuery = DB::table('task_user')
+                    ->select(
+                        'projects.code as project_code',
+                        'tasks.id as id',
+                        'tasks.name as name',
+                        'tasks.status as status',
+                        'users.name as user_name'
+                    )
+                    ->join('tasks', 'tasks.id', 'task_user.task_id')
+                    ->join('projects', 'projects.id', 'tasks.project_id')
+                    ->join('users', 'users.id', 'task_user.user_id')
+                    ->where('task_user.user_id', Auth::user()->id);
+
+
+        if (isset($request->project_id)) {
+            return $baseQuery
+                    ->where('tasks.project_id', $request->project_id)
+                    ->orderBy('id','DESC')
+                    ->get();
+        }
+        else if (isset($request->status)) {
+            return  $baseQuery
+                    ->where('status', $request->status)
+                    ->orderBy('id','DESC')
+                    ->get();
+        }
+        else {
+            return $baseQuery
+                    ->orderBy('id','DESC')
+                    ->get();
+        }
     }
 
 
 
-    public function yajraDataTable()
+    public function yajraDataTable($request)
     {
         if (request()->ajax()) {
-            $tasks = self::getAllData();
+            $tasks = self::getAllData($request);
 
             return datatables()->of($tasks)
                 ->setRowId(function ($row)
@@ -104,6 +140,11 @@ class TaskService
 
                     return $button;
                 })
+                // ->filter(function ($instance) use ($request) {
+                //     if ($request->get('status') == 'Pending' || $request->get('status') == 'Working') {
+                //         $instance->where('status', $request->get('status'));
+                //     }
+                // })
                 ->rawColumns(['status','assigned_to','action'])
                 ->make(true);
         }

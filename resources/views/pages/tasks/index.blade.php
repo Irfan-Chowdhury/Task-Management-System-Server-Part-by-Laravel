@@ -10,11 +10,37 @@
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-        @can('task-create')
+
             <div class="card-header py-3">
-                <button class="btn btn-primary font-weight-bold" type="button" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> Create Task</button>
+                <div class="row">
+                    @can('task-create')
+                    <div class="col-md-4">
+                        <button class="btn btn-primary font-weight-bold" type="button" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> Create Task</button>
+                    </div>
+                    @endcan
+                    <div class="col-md-4">
+                        <label for=""><b>Project Code</b></label>
+                        <select name="project_id" id="projectCode" class="form-control">
+                            <option value="">-- Select Project Code--</option>
+                            @foreach ($projects as $project)
+                                <option value="{{ $project->id }}">{{ $project->code }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for=""><b>Status</b></label>
+                        <select name="status" id="status" class="form-control">
+                            <option value="">-- Select Status --</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Working">Working</option>
+                            <option value="Done">Done</option>
+                        </select>
+                    </div>
+                </div>
+
+
             </div>
-        @endcan
+
         <div class="card-body">
             <div class="table-responsive">
                 <table id="dataListTable" class="table table-bordered" width="100%" cellspacing="0">
@@ -57,7 +83,8 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        $('#dataListTable').DataTable({
+
+        var table = $('#dataListTable').DataTable({
             responsive: true,
             fixedHeader: {
                 header: true,
@@ -67,6 +94,10 @@
             serverSide: true,
             ajax: {
                 url: dataTableURL,
+                data: function (d) {
+                    d.project_id = $('#projectCode').val()
+                    d.status = $('#status').val()
+                }
             },
             columns: [
                 {
@@ -92,7 +123,16 @@
                 }
             ],
         });
+
+        $('#projectCode').change(function(){
+            table.draw();
+        });
+        $('#status').change(function(){
+            table.draw();
+        });
     });
+
+
 
     //--------- Edit -------
     $(document).on('click', '.edit', function() {
