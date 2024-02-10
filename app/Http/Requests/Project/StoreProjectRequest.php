@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProjectRequest extends FormRequest
 {
-    
+
     public function authorize(): bool
     {
         return true;
@@ -15,8 +15,8 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:191|unique:projects,name,NULL,id,deleted_at,NULL',
-            'code' => 'required|string|max:191|unique:projects,code,NULL,id,deleted_at,NULL',
+            'name' => 'required|string|min:3|max:191|unique:projects,name,NULL,id,deleted_at,NULL',
+            'code' => 'required|string|min:3|max:191|unique:projects,code,NULL,id,deleted_at,NULL',
         ];
     }
 }

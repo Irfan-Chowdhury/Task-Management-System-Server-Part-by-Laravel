@@ -8,15 +8,12 @@ use App\Models\User;
 use App\Services\MemberService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 class TeamMemberController extends Controller
 {
     public function index(MemberService $memberService)
     {
         $this->authorize('viewMember', Auth::user());
-        // if (!Gate::allows('view-member', Auth::user()))
-        //     abort(403, "You are not authorized");
 
         $teamMembers = $memberService->getAllData();
 

@@ -16,21 +16,35 @@
 - [Laravel Pint](https://laravel.com/docs/10.x/pint)
 - Default Auth
 - [Artisan View](https://github.com/svenluijten/artisan-view)
-
+- [Yajra Datatable](https://yajrabox.com/docs/laravel-datatables/10.0)
+- [PEST Testing Framework](https://pestphp.com)
 
 ### Seeder
-You can run by one by one
+```bash
+php artisan db:seed
+```
 
+or,
+
+You can run by one by one
 ```bash
 php artisan db:seed --class=RoleSeeder
 php artisan db:seed --class=ManagerSeeder
 php artisan db:seed --class=ProjectSeeder
 ```
-or,
+
+### Testing 
+If need to test, then please run the following command after DB Seed 
 
 ```bash
-php artisan db:seed
+./vendor/bin/pest
 ```
+or run individually
+```bash
+./vendor/bin/pest tests/Feature/ProjectTest.php
+```
+
+
 
 ### Working Procedure
 - When rollback first drop the Foreign keys and then others. 
