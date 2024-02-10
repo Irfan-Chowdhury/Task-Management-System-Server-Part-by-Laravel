@@ -37,6 +37,8 @@ php artisan db:seed
 - Yajra Datatable for server side rendering
 - jQuery Aajx for doing all action without reload
 - Sweetalert used for display success or error message 
+- A member can not see other task except his.
+
 
 ### Manager Credentials 
 Email: manager@gmail.com <br>

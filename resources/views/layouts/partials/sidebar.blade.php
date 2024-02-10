@@ -13,7 +13,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{ route('dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -21,24 +21,26 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Page</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('team-members.index') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Team Members</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('projects.index') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Projects</span>
-        </a>
-    </li>
+
+
+    @can('sidebar-view-member')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('team-members.index') }}">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Team Members</span>
+            </a>
+        </li>
+    @endcan
+
+    @can('sidebar-view-project')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('projects.index') }}">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Projects</span>
+            </a>
+        </li>
+    @endcan
+
     <li class="nav-item">
         <a class="nav-link" href="{{ route('tasks.index') }}">
             <i class="fas fa-fw fa-chart-area"></i>

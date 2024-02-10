@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TeamMember\StoreMemberRequest;
 use App\Http\Requests\TeamMember\UpdateMemberRequest;
+use App\Models\User;
 use App\Services\MemberService;
 use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class TeamMemberController extends Controller
 {
     public function index(MemberService $memberService)
     {
+        $this->authorize('viewMember', Auth::user());
+        // if (!Gate::allows('view-member', Auth::user()))
+        //     abort(403, "You are not authorized");
+
         $teamMembers = $memberService->getAllData();
 
         return view('pages.team-members.index', compact('teamMembers'));
@@ -19,6 +26,8 @@ class TeamMemberController extends Controller
     public function store(StoreMemberRequest $request, MemberService $memberService)
     {
         try {
+            $this->authorize('createMember', Auth::user());
+
             $memberService->createTeamMember($request);
 
             return redirect()->back()->with(['success' => 'Data Created Successfully']);
@@ -32,6 +41,8 @@ class TeamMemberController extends Controller
     public function update(UpdateMemberRequest $request, $memberId, MemberService $memberService)
     {
         try {
+            $this->authorize('updateMember', Auth::user());
+
             $memberService->updateTeamMember($request, $memberId);
 
             return redirect()->back()->with(['success' => 'Data Updated Successfully']);
@@ -45,6 +56,8 @@ class TeamMemberController extends Controller
     public function destroy($memberId, MemberService $memberService)
     {
         try {
+            $this->authorize('deleteMember', Auth::user());
+
             $memberService->deleteTeamMember($memberId);
 
             return redirect()->back()->with(['success' => 'Data Deleted Successfully']);

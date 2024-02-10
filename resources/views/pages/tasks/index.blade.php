@@ -10,9 +10,11 @@
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <button class="btn btn-primary font-weight-bold" type="button" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> Create Task</button>
-        </div>
+        @can('task-create')
+            <div class="card-header py-3">
+                <button class="btn btn-primary font-weight-bold" type="button" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> Create Task</button>
+            </div>
+        @endcan
         <div class="card-body">
             <div class="table-responsive">
                 <table id="dataListTable" class="table table-bordered" width="100%" cellspacing="0">

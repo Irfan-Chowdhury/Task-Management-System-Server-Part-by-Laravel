@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Models\Task;
 use App\Services\MemberService;
 use App\Services\ProjectService;
 use App\Services\TaskService;
@@ -17,7 +18,7 @@ class TaskController extends Controller
 
     public function index(ProjectService $projectService, MemberService $memberService)
     {
-        // $data = $this->taskService->getAllData();
+        // return $data = $this->taskService->getAllData();
         // return $data[1]->users[0]->name;
 
         $projects = $projectService->getAllData();
@@ -40,6 +41,9 @@ class TaskController extends Controller
 
     public function show($taskId)
     {
+        if(!auth()->user()->can('task-view-all') && !$this->taskService->isAuthorized($taskId))
+            return abort(403, "You are not Authorized");
+
         $task = $this->taskService->getTaskById($taskId);
 
         return view('pages.tasks.show', compact('task'));
