@@ -58,6 +58,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', 'index')->name('tasks.index');
             Route::get('/datatable', 'datatable')->name('tasks.datatable');
             Route::post('/store', 'store')->name('tasks.store');
+            Route::get('/show/{taskId}', 'show')->name('tasks.show');
+            Route::get('/change-status/{taskId}/{status}', 'changeStatus')->name('tasks.change-status');
             Route::get('/edit/{taskId}', 'edit')->name('tasks.edit');
             Route::post('/update/{taskId}', 'update')->name('tasks.update');
             Route::get('/destroy/{taskId}', 'destroy')->name('tasks.destroy');

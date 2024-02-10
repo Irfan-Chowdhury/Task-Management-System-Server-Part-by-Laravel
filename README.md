@@ -32,6 +32,11 @@ or,
 php artisan db:seed
 ```
 
+### Working Procedure
+- When rollback first drop the Foreign keys and then others. 
+- Yajra Datatable for server side rendering
+- jQuery Aajx for doing all action without reload
+- Sweetalert used for display success or error message 
 
 ### Manager Credentials 
 Email: manager@gmail.com <br>

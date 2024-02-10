@@ -35,7 +35,7 @@
                         ])
 
                         @include('common-files.input-field', [
-                            'colSize' => 6,
+                            'colSize' => 12,
                             'labelName' => 'Description',
                             'fieldType' => 'textarea',
                             'nameData' => 'description',
@@ -49,6 +49,16 @@
                                 <option value="Pending">Pending</option>
                                 <option value="Working">Working</option>
                                 <option value="Done">Done</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label><strong>Assigned To </strong></label>
+                            <select name="user_id" class="form-control">
+                                <option value="">NONE</option>
+                                @foreach ($members as $member)
+                                    <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>

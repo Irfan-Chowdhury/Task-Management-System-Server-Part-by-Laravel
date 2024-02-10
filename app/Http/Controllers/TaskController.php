@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Services\MemberService;
 use App\Services\ProjectService;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
@@ -14,11 +15,15 @@ class TaskController extends Controller
     {
     }
 
-    public function index(ProjectService $projectService)
+    public function index(ProjectService $projectService, MemberService $memberService)
     {
-        $projects = $projectService->getAllData();
+        // $data = $this->taskService->getAllData();
+        // return $data[1]->users[0]->name;
 
-        return view('pages.tasks.index', compact('projects'));
+        $projects = $projectService->getAllData();
+        $members  = $memberService->getAllData();
+
+        return view('pages.tasks.index', compact('projects','members'));
     }
 
     public function datatable()
@@ -31,6 +36,20 @@ class TaskController extends Controller
         $result = $this->taskService->createTask($request);
 
         return response()->json($result['alertMsg'], $result['statusCode']);
+    }
+
+    public function show($taskId)
+    {
+        $task = $this->taskService->getTaskById($taskId);
+
+        return view('pages.tasks.show', compact('task'));
+    }
+
+    public function changeStatus($taskId, $status)
+    {
+        $result =  $this->taskService->statusChange($taskId, $status);
+
+        return redirect()->back()->with($result['alertMsg']);
     }
 
     public function edit($taskId)

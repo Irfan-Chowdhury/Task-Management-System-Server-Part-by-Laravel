@@ -11,7 +11,7 @@ class TeamMemberController extends Controller
 {
     public function index(MemberService $memberService)
     {
-        $teamMembers = $memberService->getData();
+        $teamMembers = $memberService->getAllData();
 
         return view('pages.team-members.index', compact('teamMembers'));
     }

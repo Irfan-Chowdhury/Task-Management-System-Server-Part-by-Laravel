@@ -13,7 +13,7 @@ class TaskService
 {
     public function getAllData(): ?object
     {
-        return Task::with('project:id,name,code')
+        return Task::with('project:id,name,code','users:id,name,email')
             ->select('id','project_id', 'name', 'description', 'status')
             ->orderBy('id','DESC')
             ->get();
@@ -46,14 +46,21 @@ class TaskService
                     }
                     return "<span class='p-2 badge badge-". $badgeColor . "'>" . $row->status . "</span>";
                 })
+                ->addColumn('assigned_to', function ($row) {
+
+                    return isset($row->users[0]->name) ? $row->users[0]->name : "<span class='text-danger'>NONE</span>";
+                })
                 ->addColumn('action', function ($row) {
-                    $button = '<button type="button" data-id="'.$row->id.'" class="edit btn btn-primary btn-sm"><i class="dripicons-pencil"></i>Edit</button>';
+                    $button = '';
+                    $button .= '<a href="tasks/show/'.$row->id.'"  class="btn btn-success btn-sm"><i class="dripicons-preview"></i>View</a>';
+                    $button .= '&nbsp;&nbsp;';
+                    $button .= '<button type="button" data-id="'.$row->id.'" class="edit btn btn-primary btn-sm"><i class="dripicons-pencil"></i>Edit</button>';
                     $button .= '&nbsp;&nbsp;';
                     $button .= '<button type="button" data-id="'.$row->id.'" class="delete btn btn-danger btn-sm"><i class="dripicons-trash"></i>Delete</button>';
 
                     return $button;
                 })
-                ->rawColumns(['status','action'])
+                ->rawColumns(['status','assigned_to','action'])
                 ->make(true);
         }
     }
@@ -61,12 +68,14 @@ class TaskService
     public function createTask(object $request): array
     {
         try {
-            Task::create([
+            $task = Task::create([
                 'project_id' => $request->project_id,
                 'name' => $request->name,
                 'description' => $request->description,
                 'status' => $request->status,
             ]);
+
+            $task->users()->attach($request->user_id);
 
             return Alert::successMessage('Data Saved Successfully');
 
@@ -78,7 +87,7 @@ class TaskService
 
     public function getTaskById(int $taskId): object
     {
-        return Task::with('project:id,name,code')
+        return Task::with('project:id,name,code', 'users:id,name,email')
                 ->select('id', 'project_id', 'name', 'description','status')
                 ->find($taskId);
     }
@@ -113,5 +122,20 @@ class TaskService
 
             return Alert::errorMessage($exception->getMessage());
         }
+    }
+
+    public function statusChange(int $taskId, string $status) : array
+    {
+        try {
+
+            $this->getTaskById($taskId)->update(['status' => $status]);
+
+            return Alert::successMessage('Status Changed Successfully');
+
+        } catch (Exception $exception) {
+
+            return Alert::errorMessage($exception->getMessage());
+        }
+
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class MemberService
 {
-    public function getData(): ?object
+    public function getAllData(): ?object
     {
         return User::select('id', 'name', 'email', 'employee_id', 'position')
             ->where('role_id', UserRoleEnum::TEAMMATE)

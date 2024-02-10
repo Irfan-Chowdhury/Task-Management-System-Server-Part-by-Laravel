@@ -21,6 +21,7 @@
                             <th>Project Code</th>
                             <th>Task Name</th>
                             <th>Status</th>
+                            <th>Assigned To</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -79,6 +80,10 @@
                     name: 'status',
                 },
                 {
+                    data: 'assigned_to',
+                    name: 'assigned_to',
+                },
+                {
                     data: 'action',
                     name: 'action',
                     orderable: false,
@@ -93,12 +98,16 @@
         $.get({
             url: editURL + id,
             success: function(response) {
-                console.log(response);
+                // console.log(response.users[0].id);
+
                 $("#editModal input[name='task_id']").val(response.id);
                 $("#editModal select[name='project_id']").val(response.project_id);
                 $("#editModal input[name='name']").val(response.name);
                 $("#editModal textarea[name='description']").val(response.description);
                 $("#editModal select[name='status']").val(response.status);
+                if (typeof response !== 'undefined' && response.users && response.users.length > 0 && typeof response.users[0].id !== 'undefined') {
+                    $("#editModal select[name='user_id']").val(response.users[0].id);
+                }
                 $('#editModal').modal('show');
             }
         })
