@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\StoreTaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Services\ProjectService;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
@@ -32,19 +33,19 @@ class TaskController extends Controller
         return response()->json($result['alertMsg'], $result['statusCode']);
     }
 
-    // public function edit($projectId)
-    // {
-    //     $result = $this->taskService->getProjectById($projectId);
+    public function edit($taskId)
+    {
+        $result = $this->taskService->getTaskById($taskId);
 
-    //     return response()->json($result);
-    // }
+        return response()->json($result);
+    }
 
-    // public function update(UpdateProjectRequest $request, $projectId)
-    // {
-    //     $result = $this->taskService->updateProject($request, $projectId);
+    public function update(UpdateTaskRequest $request, $taskId)
+    {
+        $result = $this->taskService->updateTask($request, $taskId);
 
-    //     return response()->json($result['alertMsg'], $result['statusCode']);
-    // }
+        return response()->json($result['alertMsg'], $result['statusCode']);
+    }
 
     public function destroy($taskId)
     {

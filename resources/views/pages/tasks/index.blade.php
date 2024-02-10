@@ -88,19 +88,21 @@
     });
 
     //--------- Edit -------
-    // $(document).on('click', '.edit', function() {
-    //     let id = $(this).data("id");
-    //     $.get({
-    //         url: editURL + id,
-    //         success: function(response) {
-    //             console.log(response);
-    //             $("#editModal input[name='project_id']").val(response.id);
-    //             $("#editModal input[name='name']").val(response.name);
-    //             $("#editModal input[name='code']").val(response.code);
-    //             $('#editModal').modal('show');
-    //         }
-    //     })
-    // });
+    $(document).on('click', '.edit', function() {
+        let id = $(this).data("id");
+        $.get({
+            url: editURL + id,
+            success: function(response) {
+                console.log(response);
+                $("#editModal input[name='task_id']").val(response.id);
+                $("#editModal select[name='project_id']").val(response.project_id);
+                $("#editModal input[name='name']").val(response.name);
+                $("#editModal textarea[name='description']").val(response.description);
+                $("#editModal select[name='status']").val(response.status);
+                $('#editModal').modal('show');
+            }
+        })
+    });
 </script>
 <script type="text/javascript" src="{{ asset('js/common-js/store.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/common-js/update.js') }}"></script>

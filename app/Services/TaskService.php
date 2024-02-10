@@ -95,4 +95,23 @@ class TaskService
             return Alert::errorMessage($exception->getMessage());
         }
     }
+
+    public function updateTask(object $request, int $taskId): array
+    {
+        try {
+            Task::where('id', $taskId)
+                ->update([
+                    'project_id' => $request->project_id,
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'status' => $request->status
+                ]);
+
+            return Alert::successMessage('Data Updated Successfully');
+
+        } catch (Exception $exception) {
+
+            return Alert::errorMessage($exception->getMessage());
+        }
+    }
 }
