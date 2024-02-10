@@ -15,7 +15,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataListTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -26,21 +26,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($teamMembers as $member)
-                            <tr>
-                                <td>{{ $member->name }}</td>
-                                <td>{{ $member->email }}</td>
-                                <td>{{ $member->employee_id }}</td>
-                                <td>{{ $member->position }}</td>
-                                <td>
-                                    <button class="btn btn-info p-2" type="button" data-toggle="modal" data-target="#editModal-{{ $member->id }}">Edit</button>
-                                    <a onclick="return confirm('Are you sure delete ?')" href="{{ route('team-members.destroy',$member->id) }}" class="btn btn-danger p-2">Delete</a>
-                                </td>
-                            </tr>
-
-                            @include('pages.team-members.edit-modal',['member'=>$member])
-
-                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -50,18 +35,84 @@
 </div>
 
 @include('pages.team-members.create-modal')
+@include('pages.team-members.edit-modal')
 
 
 @endsection
 
 @push('scripts')
 
-@if(session()->has('success'))
-    <script>
-        $(document).ready(function() {
-            displaySuccessMessage('{{ Session::get('success') }}');
+<script type="text/javascript">
+    let dataTableURL = "{{ route('team-members.datatable') }}";
+    let storeURL = "{{ route('team-members.store') }}";
+    let editURL = "/team-members/edit/";
+    let updateURL = '/team-members/update/';
+    let destroyURL = '/team-members/destroy/';
+
+    $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
-    </script>
-@endif
+        var table = $('#dataListTable').DataTable({
+            responsive: true,
+            fixedHeader: {
+                header: true,
+                footer: true
+            },
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: dataTableURL
+            },
+            columns: [
+                {
+                    data: 'name',
+                    name: 'name',
+                },
+                {
+                    data: 'email',
+                    name: 'email',
+                },
+                {
+                    data: 'employee_id',
+                    name: 'employee_id',
+                },
+                {
+                    data: 'position',
+                    name: 'position',
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                }
+            ],
+        });
+
+    });
+
+    //--------- Edit -------
+    $(document).on('click', '.edit', function() {
+        let id = $(this).data("id");
+        $.get({
+            url: editURL + id,
+            success: function(response) {
+                console.log(response);
+                $("#editModal input[name='user_id']").val(response.id);
+                $("#editModal input[name='name']").val(response.name);
+                $("#editModal input[name='email']").val(response.email);
+                $("#editModal input[name='employee_id']").val(response.employee_id);
+                $("#editModal input[name='position']").val(response.position);
+                $('#editModal').modal('show');
+            }
+        })
+    });
+</script>
+<script type="text/javascript" src="{{ asset('js/common-js/store.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/common-js/update.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/common-js/delete.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/common-js/alertMessages.js') }}"></script>
+
 @endpush

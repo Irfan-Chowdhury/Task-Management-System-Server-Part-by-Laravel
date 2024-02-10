@@ -36,8 +36,9 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('team-members')->group(function () {
         Route::controller(TeamMemberController::class)->group(function () {
             Route::get('/', 'index')->name('team-members.index');
+            Route::get('/datatable', 'datatable')->name('team-members.datatable');
             Route::post('/store', 'store')->name('team-members.store');
-            // Route::get('/edit/{team-member}', 'edit')->name('team-members.edit');
+            Route::get('/edit/{memberId}', 'edit')->name('team-members.edit');
             Route::post('/update/{memberId}', 'update')->name('team-members.update');
             Route::get('/destroy/{memberId}', 'destroy')->name('team-members.destroy');
         });

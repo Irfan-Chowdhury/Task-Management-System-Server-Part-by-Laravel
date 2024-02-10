@@ -1,27 +1,26 @@
 <!--Create Modal -->
-<div class="modal fade bd-example-modal-lg" id="editModal-{{ $member->id }}" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div id="editModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createModalLabel"> Edit Member</h5>
+                <h5 class="modal-title" id="editModalLabel"> Edit Member</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
 
-                <form method="POST" id="updateForm" action="{{ route('team-members.update', $member->id) }}">
+                <form method="POST" id="updateForm">
                     @csrf
-                    <input type="hidden" name="user_id" value="{{ $member->id }}">
-                    
+                    <input type="hidden" name="user_id" id="modelId">
+
                     <div class="row">
                         @include('common-files.input-field', [
                             'colSize' => 6,
                             'labelName' => 'Member Name',
                             'fieldType' => 'text',
                             'nameData' => 'name',
-                            'valueData' => $member->name,
+                            'placeholderData' => 'Irfan Chy',
                             'isRequired' => true,
                         ])
                         @include('common-files.input-field', [
@@ -29,7 +28,7 @@
                             'labelName' => 'Email',
                             'fieldType' => 'text',
                             'nameData' => 'email',
-                            'valueData' => $member->email,
+                            'placeholderData' => 'irfan@gmail.com',
                             'isRequired' => true,
                         ])
                         @include('common-files.input-field', [
@@ -37,7 +36,7 @@
                             'labelName' => 'Employee Id',
                             'fieldType' => 'text',
                             'nameData' => 'employee_id',
-                            'valueData' => $member->employee_id,
+                            'placeholderData' => 'L-123456',
                             'isRequired' => true,
                         ])
                         @include('common-files.input-field', [
@@ -45,7 +44,7 @@
                             'labelName' => 'Position',
                             'fieldType' => 'text',
                             'nameData' => 'position',
-                            'valueData' => $member->position,
+                            'placeholderData' => 'Software Engineer',
                             'isRequired' => true,
                         ])
                         @include('common-files.input-field', [
@@ -65,11 +64,9 @@
                             'isRequired' => false,
                         ])
 
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" id="updateButton">Update</button>
-                        </div>
-
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary" id="updateButton">Update</button>
                     </div>
                 </form>
             </div>

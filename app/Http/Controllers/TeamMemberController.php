@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TeamMember\StoreMemberRequest;
 use App\Http\Requests\TeamMember\UpdateMemberRequest;
-use App\Models\User;
 use App\Services\MemberService;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class TeamMemberController extends Controller
@@ -20,48 +18,42 @@ class TeamMemberController extends Controller
         return view('pages.team-members.index', compact('teamMembers'));
     }
 
+    public function datatable(MemberService $memberService)
+    {
+        return $memberService->yajraDataTable();
+    }
+
     public function store(StoreMemberRequest $request, MemberService $memberService)
     {
-        try {
-            $this->authorize('createMember', Auth::user());
+        $this->authorize('createMember', Auth::user());
 
-            $memberService->createTeamMember($request);
+        $result = $memberService->createTeamMember($request);
 
-            return redirect()->back()->with(['success' => 'Data Created Successfully']);
+        return response()->json($result['alertMsg'], $result['statusCode']);
+    }
 
-        } catch (Exception $e) {
+    public function edit($memberId, MemberService $memberService)
+    {
+        $result = $memberService->getMemberById($memberId);
 
-            return redirect()->back()->withErrors(['errors' => $e->getMessage()]);
-        }
+        return response()->json($result);
     }
 
     public function update(UpdateMemberRequest $request, $memberId, MemberService $memberService)
     {
-        try {
-            $this->authorize('updateMember', Auth::user());
+        $this->authorize('updateMember', Auth::user());
 
-            $memberService->updateTeamMember($request, $memberId);
+        $result = $memberService->updateTeamMember($request, $memberId);
 
-            return redirect()->back()->with(['success' => 'Data Updated Successfully']);
-
-        } catch (Exception $e) {
-
-            return redirect()->back()->withErrors(['errors' => $e->getMessage()]);
-        }
+        return response()->json($result['alertMsg'], $result['statusCode']);
     }
 
     public function destroy($memberId, MemberService $memberService)
     {
-        try {
-            $this->authorize('deleteMember', Auth::user());
+        $this->authorize('deleteMember', Auth::user());
 
-            $memberService->deleteTeamMember($memberId);
+        $result = $memberService->deleteTeamMember($memberId);
 
-            return redirect()->back()->with(['success' => 'Data Deleted Successfully']);
-
-        } catch (Exception $e) {
-
-            return redirect()->back()->withErrors(['errors' => $e->getMessage()]);
-        }
+        return response()->json($result['alertMsg'], $result['statusCode']);
     }
 }

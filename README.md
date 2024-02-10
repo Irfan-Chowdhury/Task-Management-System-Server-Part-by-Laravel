@@ -34,13 +34,14 @@ php artisan db:seed --class=ProjectSeeder
 ```
 
 ### Testing 
-If need to test, then please run the following command after DB Seed 
+If need to run test, then please run the following command after DB Seed 
 
 ```bash
 ./vendor/bin/pest
 ```
 or run individually
 ```bash
+./vendor/bin/pest tests/Feature/LoginTest.php
 ./vendor/bin/pest tests/Feature/ProjectTest.php
 ```
 
