@@ -87,7 +87,7 @@ class TaskService
 
 
 
-    public function yajraDataTable($request)
+    public function yajraDataTable(object|null $request)
     {
         if (request()->ajax()) {
             $tasks = self::getAllData($request);

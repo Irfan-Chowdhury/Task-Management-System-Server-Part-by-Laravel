@@ -10,17 +10,24 @@ use Exception;
 
 class ProjectService
 {
-    public function getAllData(): ?object
+    public function getAllData(object|null $request=null): ?object
     {
+        if (isset($request->project_name)) {
+            return Project::select('id', 'name', 'code')
+            ->where('name',$request->project_name)
+            ->orderBy('id','DESC')
+            ->get();
+        }
         return Project::select('id', 'name', 'code')
             ->orderBy('id','DESC')
             ->get();
+
     }
 
-    public function yajraDataTable()
+    public function yajraDataTable(object|null $request)
     {
         if (request()->ajax()) {
-            $projects = self::getAllData();
+            $projects = self::getAllData($request);
 
             return datatables()->of($projects)
                 ->setRowId(function ($row) {

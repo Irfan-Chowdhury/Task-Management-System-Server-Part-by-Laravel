@@ -6,6 +6,7 @@ use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Models\Project;
 use App\Services\ProjectService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
@@ -18,12 +19,14 @@ class ProjectController extends Controller
     {
         $this->authorize('viewProject', $project);
 
-        return view('pages.projects.index');
+        $projects = $this->projectService->getAllData();
+
+        return view('pages.projects.index', compact('projects'));
     }
 
-    public function datatable()
+    public function datatable(Request $request)
     {
-        return $this->projectService->yajraDataTable();
+        return $this->projectService->yajraDataTable($request);
     }
 
     public function store(StoreProjectRequest $request, Project $project)

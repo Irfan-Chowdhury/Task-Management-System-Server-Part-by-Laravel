@@ -11,7 +11,20 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <button class="btn btn-primary font-weight-bold" type="button" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> Create Project</button>
+            <div class="row">
+                <div class="col-md-4">
+                    <button class="btn btn-primary font-weight-bold" type="button" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> Create Project</button>
+                </div>
+                <div class="col-md-4">
+                    <label for=""><b>Project Name</b></label>
+                    <select name="project_id" id="projectName" class="form-control">
+                        <option value="">-- Select Project Name--</option>
+                        @foreach ($projects as $project)
+                            <option value="{{ $project->name }}">{{ $project->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -53,7 +66,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        $('#dataListTable').DataTable({
+        var table = $('#dataListTable').DataTable({
             responsive: true,
             fixedHeader: {
                 header: true,
@@ -63,6 +76,9 @@
             serverSide: true,
             ajax: {
                 url: dataTableURL,
+                data: function (d) {
+                    d.project_name = $('#projectName').val()
+                }
             },
             columns: [
                 {
@@ -79,6 +95,10 @@
                     orderable: false,
                 }
             ],
+        });
+
+        $('#projectName').change(function(){
+            table.draw();
         });
     });
 
