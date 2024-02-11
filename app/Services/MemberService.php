@@ -16,7 +16,7 @@ class MemberService
     {
         return User::select('id', 'name', 'email', 'employee_id', 'position')
             ->where('role_id', UserRoleEnum::TEAMMATE)
-            ->orderBy('id','DESC')
+            ->orderBy('id', 'DESC')
             ->get();
 
     }
@@ -76,7 +76,7 @@ class MemberService
 
     public function getMemberById(int $memberId): object
     {
-        return User::select('id', 'name', 'email','employee_id','position')->find($memberId);
+        return User::select('id', 'name', 'email', 'employee_id', 'position')->find($memberId);
     }
 
     public function updateTeamMember(object $request, int $memberId): array
@@ -94,7 +94,6 @@ class MemberService
             if ($request->password) {
                 $data['password'] = Hash::make($request->password);
             }
-
 
             self::getMemberById($memberId)
                 ->update($data);

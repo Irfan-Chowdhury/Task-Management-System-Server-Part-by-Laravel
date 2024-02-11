@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Enums\TaskStatusEnum;
 use App\Facades\Alert;
 use App\Models\Task;
 use Exception;
@@ -13,126 +12,115 @@ use Illuminate\Support\Facades\DB;
 
 class TaskService
 {
-
-    public function getAllData(object|null $request): ?object
+    public function getAllData(?object $request): ?object
     {
-        if(auth()->user()->can('task-view-all'))
-           return self::getDataForManager($request);
-        else
-           return self::getDataForSingleMember($request);
+        if (auth()->user()->can('task-view-all')) {
+            return self::getDataForManager($request);
+        } else {
+            return self::getDataForSingleMember($request);
+        }
     }
 
-
-    private function getDataForManager(object|null $request) : ?object
+    private function getDataForManager(?object $request): ?object
     {
-        $baseQuery = Task::with('project:id,name,code','users:id,name,email')
-                    ->select('id','project_id', 'name', 'description', 'status');
+        $baseQuery = Task::with('project:id,name,code', 'users:id,name,email')
+            ->select('id', 'project_id', 'name', 'description', 'status');
 
         if (isset($request->project_id)) {
-            return  $baseQuery
-                    ->where('project_id', $request->project_id)
-                    ->orderBy('id','DESC')
-                    ->get();
+            return $baseQuery
+                ->where('project_id', $request->project_id)
+                ->orderBy('id', 'DESC')
+                ->get();
+        } elseif (isset($request->status)) {
+            return $baseQuery
+                ->where('status', $request->status)
+                ->orderBy('id', 'DESC')
+                ->get();
+        } else {
+            return $baseQuery
+                ->orderBy('id', 'DESC')
+                ->get();
         }
-        else if (isset($request->status)) {
-            return  $baseQuery
-                    ->where('status', $request->status)
-                    ->orderBy('id','DESC')
-                    ->get();
-        }
-
-        else {
-            return  $baseQuery
-                    ->orderBy('id','DESC')
-                    ->get();
-        }
-
 
     }
 
-    private function getDataForSingleMember(object|null $request=null) : ?object
+    private function getDataForSingleMember(?object $request = null): ?object
     {
         $baseQuery = DB::table('task_user')
-                    ->select(
-                        'projects.code as project_code',
-                        'tasks.id as id',
-                        'tasks.name as name',
-                        'tasks.status as status',
-                        'users.name as user_name'
-                    )
-                    ->join('tasks', 'tasks.id', 'task_user.task_id')
-                    ->join('projects', 'projects.id', 'tasks.project_id')
-                    ->join('users', 'users.id', 'task_user.user_id')
-                    ->where('task_user.user_id', Auth::user()->id);
-
+            ->select(
+                'projects.code as project_code',
+                'tasks.id as id',
+                'tasks.name as name',
+                'tasks.status as status',
+                'users.name as user_name'
+            )
+            ->join('tasks', 'tasks.id', 'task_user.task_id')
+            ->join('projects', 'projects.id', 'tasks.project_id')
+            ->join('users', 'users.id', 'task_user.user_id')
+            ->where('task_user.user_id', Auth::user()->id);
 
         if (isset($request->project_id)) {
             return $baseQuery
-                    ->where('tasks.project_id', $request->project_id)
-                    ->orderBy('id','DESC')
-                    ->get();
-        }
-        else if (isset($request->status)) {
-            return  $baseQuery
-                    ->where('status', $request->status)
-                    ->orderBy('id','DESC')
-                    ->get();
-        }
-        else {
+                ->where('tasks.project_id', $request->project_id)
+                ->orderBy('id', 'DESC')
+                ->get();
+        } elseif (isset($request->status)) {
             return $baseQuery
-                    ->orderBy('id','DESC')
-                    ->get();
+                ->where('status', $request->status)
+                ->orderBy('id', 'DESC')
+                ->get();
+        } else {
+            return $baseQuery
+                ->orderBy('id', 'DESC')
+                ->get();
         }
     }
 
-
-
-    public function yajraDataTable(object|null $request)
+    public function yajraDataTable(?object $request)
     {
         if (request()->ajax()) {
             $tasks = self::getAllData($request);
 
             return datatables()->of($tasks)
-                ->setRowId(function ($row)
-                {
+                ->setRowId(function ($row) {
                     return $row->id;
                 })
-                ->addColumn('project_code', function ($row)
-                {
-                    if(auth()->user()->can('task-view-all'))
+                ->addColumn('project_code', function ($row) {
+                    if (auth()->user()->can('task-view-all')) {
                         return $row->project->code;
-                    else
+                    } else {
                         return $row->project_code;
+                    }
                 })
-                ->addColumn('name', function ($row)
-                {
+                ->addColumn('name', function ($row) {
                     return $row->name;
                 })
                 ->addColumn('status', function ($row) {
 
                     $badgeColor = '';
-                    if($row->status === "Pending"){
+                    if ($row->status === 'Pending') {
                         $badgeColor = 'primary';
-                    }else if($row->status === "Working"){
+                    } elseif ($row->status === 'Working') {
                         $badgeColor = 'warning';
-                    }else if($row->status === "Done"){
+                    } elseif ($row->status === 'Done') {
                         $badgeColor = 'success';
                     }
-                    return "<span class='p-2 badge badge-". $badgeColor . "'>" . $row->status . "</span>";
+
+                    return "<span class='p-2 badge badge-".$badgeColor."'>".$row->status.'</span>';
                 })
-                ->addColumn('assigned_to', function ($row)
-                {
-                    if(auth()->user()->can('task-view-all'))
+                ->addColumn('assigned_to', function ($row) {
+                    if (auth()->user()->can('task-view-all')) {
                         return isset($row->users[0]->name) ? $row->users[0]->name : "<span class='text-danger'>NONE</span>";
-                    else
+                    } else {
                         return $row->user_name;
+                    }
                 })
                 ->addColumn('action', function ($row) {
                     $button = '';
                     $button .= '<a href="tasks/show/'.$row->id.'"  class="btn btn-success btn-sm"><i class="dripicons-preview"></i>View</a>';
                     $button .= '&nbsp;&nbsp;';
 
-                    if(auth()->user()->can('task-edit') && auth()->user()->can('task-delete')) {
+                    if (auth()->user()->can('task-edit') && auth()->user()->can('task-delete')) {
                         $button .= '<button type="button" data-id="'.$row->id.'" class="edit btn btn-primary btn-sm"><i class="dripicons-pencil"></i>Edit</button>';
                         $button .= '&nbsp;&nbsp;';
                         $button .= '<button type="button" data-id="'.$row->id.'" class="delete btn btn-danger btn-sm"><i class="dripicons-trash"></i>Delete</button>';
@@ -140,12 +128,7 @@ class TaskService
 
                     return $button;
                 })
-                // ->filter(function ($instance) use ($request) {
-                //     if ($request->get('status') == 'Pending' || $request->get('status') == 'Working') {
-                //         $instance->where('status', $request->get('status'));
-                //     }
-                // })
-                ->rawColumns(['status','assigned_to','action'])
+                ->rawColumns(['status', 'assigned_to', 'action'])
                 ->make(true);
         }
     }
@@ -178,8 +161,8 @@ class TaskService
     public function getTaskById(int $taskId): object
     {
         return Task::with('project:id,name,code', 'users:id,name,email')
-                ->select('id', 'project_id', 'name', 'description','status')
-                ->find($taskId);
+            ->select('id', 'project_id', 'name', 'description', 'status')
+            ->find($taskId);
     }
 
     public function removeTask(int $taskId): array
@@ -202,11 +185,11 @@ class TaskService
 
             $task = self::getTaskById($taskId);
             $task->update([
-                    'project_id' => $request->project_id,
-                    'name' => $request->name,
-                    'description' => $request->description,
-                    'status' => $request->status
-                ]);
+                'project_id' => $request->project_id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'status' => $request->status,
+            ]);
 
             $task->users()->sync($request->user_id);
 
@@ -222,7 +205,7 @@ class TaskService
         }
     }
 
-    public function statusChange(int $taskId, string $status) : array
+    public function statusChange(int $taskId, string $status): array
     {
         try {
 
@@ -236,14 +219,15 @@ class TaskService
         }
     }
 
-    public function isAuthorized(int $taskId) : bool
+    public function isAuthorized(int $taskId): bool
     {
         $data = self::getDataForSingleMember();
 
         $taskIdsValues = $data->pluck('id')->toArray();
 
-        if(in_array($taskId, $taskIdsValues))
+        if (in_array($taskId, $taskIdsValues)) {
             return true;
+        }
 
         return false;
 

@@ -14,13 +14,14 @@ class DatabaseSeeder extends Seeder
     {
         //Single : php artisan db:seed --class=RoleSeeder
 
-        
+
         $this->call([
             RoleSeeder::class,
             ManagerSeeder::class,
             MemberSeeder::class,
             ProjectSeeder::class,
             TaskSeeder::class,
+            TaskUserSeeder::class,
         ]);
     }
 }

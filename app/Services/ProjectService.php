@@ -10,21 +10,22 @@ use Exception;
 
 class ProjectService
 {
-    public function getAllData(object|null $request=null): ?object
+    public function getAllData(?object $request = null): ?object
     {
         if (isset($request->project_name)) {
             return Project::select('id', 'name', 'code')
-            ->where('name',$request->project_name)
-            ->orderBy('id','DESC')
-            ->get();
+                ->where('name', $request->project_name)
+                ->orderBy('id', 'DESC')
+                ->get();
         }
+
         return Project::select('id', 'name', 'code')
-            ->orderBy('id','DESC')
+            ->orderBy('id', 'DESC')
             ->get();
 
     }
 
-    public function yajraDataTable(object|null $request)
+    public function yajraDataTable(?object $request)
     {
         if (request()->ajax()) {
             $projects = self::getAllData($request);

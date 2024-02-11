@@ -47,7 +47,6 @@ class TaskSeeder extends Seeder
                 'description' => $description,
                 'status' => TaskStatusEnum::PENDING
             ],
-
         ]);
     }
 }

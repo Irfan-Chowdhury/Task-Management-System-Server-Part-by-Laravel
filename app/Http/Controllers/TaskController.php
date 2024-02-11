@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
-use App\Models\Task;
 use App\Services\MemberService;
 use App\Services\ProjectService;
 use App\Services\TaskService;
@@ -19,9 +18,9 @@ class TaskController extends Controller
     public function index(ProjectService $projectService, MemberService $memberService)
     {
         $projects = $projectService->getAllData();
-        $members  = $memberService->getAllData();
+        $members = $memberService->getAllData();
 
-        return view('pages.tasks.index', compact('projects','members'));
+        return view('pages.tasks.index', compact('projects', 'members'));
     }
 
     public function datatable(Request $request)
@@ -38,8 +37,9 @@ class TaskController extends Controller
 
     public function show($taskId)
     {
-        if(!auth()->user()->can('task-view-all') && !$this->taskService->isAuthorized($taskId))
-            return abort(403, "You are not Authorized");
+        if (! auth()->user()->can('task-view-all') && ! $this->taskService->isAuthorized($taskId)) {
+            return abort(403, 'You are not Authorized');
+        }
 
         $task = $this->taskService->getTaskById($taskId);
 
@@ -48,7 +48,7 @@ class TaskController extends Controller
 
     public function changeStatus($taskId, $status)
     {
-        $result =  $this->taskService->statusChange($taskId, $status);
+        $result = $this->taskService->statusChange($taskId, $status);
 
         return redirect()->back()->with($result['alertMsg']);
     }
