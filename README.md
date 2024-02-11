@@ -25,19 +25,17 @@ Managers can assign tasks to teammates, and teammates, upon logging in, can view
 For the search functionality, there is a datatable named `Yajra` where any word can be easily searched.
 Additionally, there is a filter option where Managers and Teammates can filter tasks based on Project and status. Managers can also filter projects according to project name.
 
-## How to run this project ?
-
-#### Database Schema
-[Click Here](https://drawsql.app/teams/irfan-chy/diagrams/task-management-system)
-
-
-#### Technology Used
+## Technology Used
 - PHP - 8.1
 - Laravel- 10
 - MySQL - 8
 - Bootstrap - 4
 - jQuery, Ajax
 
+
+## How to run this project ?
+
+#### At first clone the repository 
 
 #### Update Your Composer 
 ```bash
@@ -113,6 +111,9 @@ Password: member456
 ```
 
 or goto direct your_domain. There are two options.
+
+## Database Schema
+[Click Here](https://drawsql.app/teams/irfan-chy/diagrams/task-management-system)
 
 
 ## Decisions made during task completion
