@@ -14,7 +14,7 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:191|unique:tasks,name,'.$this->task_id.',id,deleted_at,NULL',
+            'name' => 'required|string|min:3|max:191|unique:tasks,name,'.$this->task_id.',id,deleted_at,NULL',
             'description' => 'required',
         ];
     }

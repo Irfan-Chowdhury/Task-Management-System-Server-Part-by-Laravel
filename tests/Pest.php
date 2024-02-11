@@ -1,5 +1,9 @@
 <?php
+
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Faker\Factory as Faker;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -51,16 +55,29 @@ function ProjectData()
     ];
 }
 
+function TeamMemberData()
+{
+    $faker = Faker::create();
+
+    return [
+        'name' => Str::random(10),
+        'email' => $faker->unique()->safeEmail,
+        'employee_id' => Str::random(5),
+        'position' => "Software Engineer",
+        'role_id' => 2, //TeamMember
+        'password' => "test123",
+        'password_confirmation' => "test123",
+    ];
+}
+
+function TaskData()
+{
+    return [
+        'project_id' => 1,
+        'name' => Str::random(10),
+        'description' => Str::random(100),
+        'status' => "Pending"
+    ];
+}
 
 
-/*
-#create file in feature folder :
-php artisan make:test UserTest --pest
-
-#create file in unit folder
-php artisan make:test UserTest --unit --pest
-
-#indivisual
-./vendor/bin/pest tests/Feature/UserAuthTest.php
-
-*/

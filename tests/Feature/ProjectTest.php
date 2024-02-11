@@ -6,6 +6,13 @@ beforeEach(function () {
     $this->userAuthenticated();
 });
 
+/*
+|--------------------------------------------------------------------------
+| General
+|--------------------------------------------------------------------------
+|
+*/
+
 it('gives back a successful response for project page', function () {
     $this->get(route('projects.index'))->assertOk();
 });

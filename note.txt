@@ -1,0 +1,20 @@
+======== Seeder =======
+ Single : php artisan db:seed --class=RoleSeeder
+
+
+======== PEST Framework =======
+
+#create file in feature folder :
+php artisan make:test UserTest --pest
+
+#create file in unit folder
+php artisan make:test UserTest --unit --pest
+
+#indivisual
+./vendor/bin/pest tests/Feature/UserAuthTest.php
+
+======== Laravel Pint =======
+
+Single : ./vendor/bin/pint app/Models/User.php
+Display Before Test: ./vendor/bin/pint app/Models/User.php -v --test
+Display After Test: ./vendor/bin/pint app/Models/User.php -v

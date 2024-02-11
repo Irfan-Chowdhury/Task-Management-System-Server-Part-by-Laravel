@@ -18,9 +18,6 @@ class TaskController extends Controller
 
     public function index(ProjectService $projectService, MemberService $memberService)
     {
-        // return $data = $this->taskService->getAllData();
-        // return $data[1]->users[0]->name;
-
         $projects = $projectService->getAllData();
         $members  = $memberService->getAllData();
 
