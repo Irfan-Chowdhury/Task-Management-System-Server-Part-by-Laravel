@@ -11,13 +11,11 @@
                 processData: false,
                 dataType: "json",
                 error: function(response) {
-                    console.log(response);
                     let htmlContent = prepareMessage(response);
                     displayErrorMessage(htmlContent);
                     $(`#${submitButtonName}`).text('Submit');
                 },
                 success: function(response) {
-                    console.log(response);
                     displaySuccessMessage(response.success);
                     $(`#${submitButtonName}`).text('Submit');
                 }

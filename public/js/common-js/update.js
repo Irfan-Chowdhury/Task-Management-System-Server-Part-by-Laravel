@@ -14,13 +14,11 @@
                 processData: false,
                 dataType: "json",
                 error: function(response) {
-                    console.log(response);
                     let htmlContent = prepareMessage(response);
                     displayErrorMessage(htmlContent);
                     $('#updateButton').text('Update');
                 },
                 success: function (response) {
-                    console.log(response);
                     displaySuccessMessage(response.success);
                     if ($.fn.DataTable.isDataTable('#dataListTable')) {
                         $('#dataListTable').DataTable().ajax.reload();

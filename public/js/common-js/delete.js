@@ -14,7 +14,6 @@
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-
                 $.get({
                     url: destroyURL + modelId,
                     error: function (response) {
@@ -23,7 +22,6 @@
                         displayErrorMessage(htmlContent);
                     },
                     success: function (response) {
-                        console.log(response);
                         Swal.fire(
                             'Deleted!',
                             'Your data has been deleted.',

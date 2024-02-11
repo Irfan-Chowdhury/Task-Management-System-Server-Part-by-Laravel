@@ -92,6 +92,7 @@ You can check my Feature test result : [Click Here](https://snipboard.io/ZMrwu4.
 
 #### Manager Credentials 
 ```bash
+url: your_domain/login
 Email: manager@gmail.com 
 Password: manager123
 ```
@@ -99,22 +100,26 @@ Password: manager123
 
 #### Team Members Credentials 
 ```bash
+url: your_domain/member-login
 Email: member123@gmail.com 
 Password: member123
 ```
 
 or,
 ```bash
+url: your_domain/member-login
 Email: member456@gmail.com 
 Password: member456
 ```
 
+or goto direct your_domain. There are two options.
+
 
 ## Decisions made during task completion
 - When rolling back, first drop the foreign keys, and then other constraints. 
-- For code formatting, I utilized Laravel Pint.
+- For code clean and formatting, I used Laravel Pint.
 - Yajra Datatable used for server-side rendering.
-- jQuery Ajax was utilized for performing actions without reloading the page.
+- jQuery Ajax was used for performing actions without reloading the page.
 - Sweetalert was used to display success or error messages.
 - A member can only view their own tasks.
 - I tried to write some test code using the PEST Testing Framework. Currently, I've only written some feature test codes.
@@ -122,16 +127,7 @@ Password: member456
 - I separated the data layer and business logic from the controller to facilitate method reusability and parallel testing. 
 - Implement error handling using `try..catch`. When multiple data operations are performed, I followed the transaction mechanism. If successful, the transaction is committed; otherwise, it is rolled back (Used transaction in "Task" operations). 
 
-```bash
-DB::beginTransaction();
-try {
-    DB::commit();
 
-} catch (Exception $exception) {
-
-    DB::rollback();
-}
-```
 
 ### Packages which I used
 - [Laravel Pint](https://laravel.com/docs/10.x/pint)
