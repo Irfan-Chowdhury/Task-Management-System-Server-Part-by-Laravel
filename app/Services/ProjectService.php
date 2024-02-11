@@ -102,4 +102,9 @@ class ProjectService
             return Alert::errorMessage($exception->getMessage());
         }
     }
+
+    public function totalProjet() : int
+    {
+        return Project::count();
+    }
 }

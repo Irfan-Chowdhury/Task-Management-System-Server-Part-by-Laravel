@@ -44,7 +44,7 @@ class TaskService
 
     }
 
-    private function getDataForSingleMember(?object $request = null): ?object
+    public function getDataForSingleMember(?object $request = null): ?object
     {
         $baseQuery = DB::table('task_user')
             ->select(
@@ -232,4 +232,14 @@ class TaskService
         return false;
 
     }
+
+
+    public function taskStatus() : object
+    {
+        return Task::selectRaw('count(*) as total_count')
+            ->selectRaw('count(case when status = "Pending" then 1 end) as pending_count')
+            ->selectRaw('count(case when status = "Done" then 1 end) as done_count')
+            ->first();
+    }
+
 }
