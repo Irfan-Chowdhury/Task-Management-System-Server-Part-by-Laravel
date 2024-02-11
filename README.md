@@ -9,19 +9,19 @@ The `Task Management System` is a web-based application developed for `Business 
 
 Please refer to the system requirements details given below, which I have attempted to follow:
 
-##### - Authentication and Authorization :
+#### - Authentication and Authorization :
 There are two types of users: Managers and Teammates. Managers can sign up using their Email, Name, Employee ID, and Password. They can also create Teammates who can then log in. Managers have access to all features, whereas Teammates have some limitations. A member can only access their assigned data. However, they cannot view tasks assigned to other members. <br>
 Managers can access: Team management, Project management, and Task management. <br>
 Teammates can access: They can only view their task list, filter it, and update the status.
 
 
-##### - Project Management :
+#### - Project Management :
 Managers can create Projects, each with a unique code and name. They can also create Tasks, which include task name, project code, description, and status.
 
-##### - Task and Status Management :
+#### - Task and Status Management :
 Managers can assign tasks to teammates, and teammates, upon logging in, can view their assigned tasks and update their status.
 
-##### - Search and Filter functionality:
+#### - Search and Filter functionality:
 For the search functionality, there is a datatable named `Yajra` where any word can be easily searched.
 Additionally, there is a filter option where Managers and Teammates can filter tasks based on Project and status. Managers can also filter projects according to project name.
 
