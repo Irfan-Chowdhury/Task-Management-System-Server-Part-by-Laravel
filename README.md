@@ -117,12 +117,12 @@ or goto direct your_domain. There are two options.
 
 ## Decisions made during task completion
 - When rolling back, first drop the foreign keys, and then other constraints. 
-- For code clean and formatting, I used Laravel Pint.
-- Yajra Datatable used for server-side rendering.
+- For code clean and formatting, I used `Laravel Pint`.
+- Used `Yajra` datatable for server-side rendering, data filtering, sorting and pagination.
 - jQuery Ajax was used for performing actions without reloading the page.
-- Sweetalert was used to display success or error messages.
+- `Sweetalert` was used to display success or error messages.
 - A member can only view their own tasks.
-- I tried to write some test code using the PEST Testing Framework. Currently, I've only written some feature test codes.
+- I tried to write some test code using the `PEST Testing Framework`. Currently, I've only written some feature test codes.
 - A member can access only their assigned data. However, they cannot view tasks assigned to other members. Managers have access to all tasks.
 - I separated the data layer and business logic from the controller to facilitate method reusability and parallel testing. 
 - Implement error handling using `try..catch`. When multiple data operations are performed, I followed the transaction mechanism. If successful, the transaction is committed; otherwise, it is rolled back (Used transaction in "Task" operations). 
