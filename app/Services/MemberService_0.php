@@ -7,14 +7,11 @@ namespace App\Services;
 use App\Enums\UserRoleEnum;
 use App\Facades\Alert;
 use App\Models\User;
-use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 
 class MemberService
 {
-    use ApiResponse;
-
     public function getAllData(): ?object
     {
         return User::select('id', 'name', 'email', 'employee_id', 'position')
@@ -57,7 +54,7 @@ class MemberService
         }
     }
 
-    public function createTeamMember(object $request): object
+    public function createTeamMember(object $request): array
     {
         try {
             User::create([
@@ -69,11 +66,11 @@ class MemberService
                 'password' => Hash::make($request->password),
             ]);
 
-            return $this->success('Team Data Saved Successfully');
+            return Alert::successMessage('Data Saved Successfully');
 
         } catch (Exception $exception) {
 
-            // return Alert::errorMessage($exception->getMessage());
+            return Alert::errorMessage($exception->getMessage());
         }
     }
 
