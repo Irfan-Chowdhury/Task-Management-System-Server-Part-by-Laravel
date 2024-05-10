@@ -30,4 +30,13 @@ class TeamMemberController extends BaseController
         // return response()->json($result);
         // return $this->success('Team Data Saved Successfully');
     }
+
+    public function destroy(int $memberId, MemberService $memberService)
+    {
+        // $this->authorize('deleteMember', Auth::user());
+
+        return $memberService->deleteTeamMember($memberId);
+
+        // return response()->json($result['alertMsg'], $result['statusCode']);
+    }
 }

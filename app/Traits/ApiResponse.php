@@ -10,5 +10,13 @@ trait ApiResponse {
             'status' => $statusCode
         ], $statusCode);
     }
+
+    protected function error(string $message, int $statusCode=422) :object
+    {
+        return response()->json([
+            'message' => $message,
+            'status' => $statusCode
+        ], $statusCode);
+    }
 }
 

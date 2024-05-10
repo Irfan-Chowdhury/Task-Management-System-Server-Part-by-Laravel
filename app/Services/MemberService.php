@@ -73,6 +73,7 @@ class MemberService
 
         } catch (Exception $exception) {
 
+            return $this->error($exception->getMessage());
             // return Alert::errorMessage($exception->getMessage());
         }
     }
@@ -109,16 +110,19 @@ class MemberService
         }
     }
 
-    public function deleteTeamMember(int $memberId): array
+    public function deleteTeamMember(int $memberId): array|object
     {
         try {
             $this->getMemberById($memberId)->delete();
 
-            return Alert::successMessage('Data Deleted Successfully');
+            // return Alert::successMessage('Data Deleted Successfully');
+
+            return $this->success('Member Deleted Successfully');
 
         } catch (Exception $exception) {
 
-            return Alert::errorMessage($exception->getMessage());
+            return $this->error($exception->getMessage());
+            // return Alert::errorMessage($exception->getMessage());
         }
     }
 }
