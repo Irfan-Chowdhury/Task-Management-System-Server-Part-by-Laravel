@@ -83,7 +83,7 @@ class MemberService
         return User::select('id', 'name', 'email', 'employee_id', 'position')->find($memberId);
     }
 
-    public function updateTeamMember(object $request, int $memberId): array
+    public function updateTeamMember(object $request, int $memberId): object
     {
         try {
 
@@ -102,11 +102,11 @@ class MemberService
             self::getMemberById($memberId)
                 ->update($data);
 
-            return Alert::successMessage('Data Updated Successfully');
+            return $this->success('Data Updated Successfully');
 
         } catch (Exception $exception) {
 
-            return Alert::errorMessage($exception->getMessage());
+            return $this->error($exception->getMessage());
         }
     }
 
